@@ -1,5 +1,9 @@
 package trees;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
 public class TreeNode {
 	
 	private int data;
@@ -31,6 +35,25 @@ public class TreeNode {
 		}
 	}
 	
+	public boolean contains(int value) {
+		if(value == data) {
+			return true;
+		}
+		
+		boolean contains = false;
+		if(value < data) {
+			if(leftChild != null) {
+				contains = leftChild.contains(value);
+			}
+		}else {
+			if(rightChild != null) {
+				contains = rightChild.contains(value);
+			}
+		}
+		
+		return contains;
+	}
+	
 	public void traverseInorder() {
 		if(leftChild != null) {
 			leftChild.traverseInorder();
@@ -40,6 +63,28 @@ public class TreeNode {
 			rightChild.traverseInorder();
 		}
 	}
+	
+	//  BFS
+	public void levelOrder(TreeNode node){
+		Queue<TreeNode> queue = new LinkedList<TreeNode>();
+		queue.add(node);
+		
+		while(!queue.isEmpty()) {
+			
+			TreeNode tempNode = queue.poll();
+			System.out.print(tempNode.data +", ");
+			
+			if(tempNode.leftChild != null) {
+				queue.add(tempNode.leftChild);
+			}
+			
+			if(tempNode.rightChild != null) {
+				queue.add(tempNode.rightChild);
+			}
+		}
+		
+	}
+	
 	
 	public TreeNode get(int value) {
 		if(value == data) {
@@ -74,6 +119,32 @@ public class TreeNode {
 		}else {
 			return rightChild.max();
 		}
+	}
+	
+	public int maxDepth(TreeNode root) {
+		if(root == null) return 0;
+		
+		int leftHeight = maxDepth(root.leftChild);
+		int rightHeight = maxDepth(root.rightChild);
+		
+		return 1 + Math.max(leftHeight, rightHeight);
+	}
+	
+	public int bsHeight(TreeNode root) {
+		if(root == null) return 0;
+		
+		int leftHeight = maxDepth(root.leftChild);
+		if(leftHeight == -1) return -1;
+		
+		int rightHeight = maxDepth(root.rightChild);
+		if(rightHeight == -1) return -1;
+		
+		if(Math.abs(leftHeight - rightHeight) > 1) return -1;
+		return 1 + Math.max(leftHeight, rightHeight);
+	}
+	
+	public boolean isBalance(TreeNode root) {
+		return bsHeight(root) != -1;
 	}
 	
 	public int getData() {

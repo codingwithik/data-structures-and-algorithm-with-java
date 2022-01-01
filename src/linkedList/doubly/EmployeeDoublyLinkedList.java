@@ -34,6 +34,7 @@ public class EmployeeDoublyLinkedList {
 		size++;
 	}
 	
+	//1-><-2-><-3-><-4
 	public void addBefore(Employee newEmployee, Employee existingEmployee) {
 		if(isEmpty())
 			throw new EmptyStackException();

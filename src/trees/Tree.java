@@ -12,6 +12,9 @@ public class Tree {
 		}
 	}
 	
+	public boolean contains(int value) {
+		return root.contains(value);
+	}
 	/**
 	 * Traversal
 	 * 1. Level - visit nodes on each level
@@ -56,7 +59,6 @@ public class Tree {
 	 * 2. The Node has one Child
 	 * 3. The Node has two Children
 	 */
-	
 	public void delete(int value) {
 		root = delete(root, value);
 	}
@@ -75,11 +77,21 @@ public class Tree {
 			subtreeRoot.setRightChild(delete(subtreeRoot.getRightChild(), value));
 			
 		}else {
+			// Case 1 and 2: node to delete has 0 or 1 child
 			if(subtreeRoot.getLeftChild() == null) {
 				return subtreeRoot.getRightChild();
 			}else if(subtreeRoot.getRightChild() == null) {
 				return subtreeRoot.getLeftChild();
 			}
+			
+			// Case 3: node to delete has 2 children
+			
+			// Replace the value in the subtree node with the smallest value
+			// from the right subtree
+			subtreeRoot.setData(subtreeRoot.getRightChild().min());
+			
+			// Delete the node that has the smallest value in the right subtree
+			subtreeRoot.setRightChild(delete(subtreeRoot.getRightChild(), subtreeRoot.getData()));
 		}
 		
 		return subtreeRoot;
